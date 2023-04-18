@@ -143,17 +143,13 @@ class RemoteControlVector:
         for anim_name in all_anim_names:
             if anim_name not in bad_anim_names:
                 self.anim_names.append(anim_name)
-
-        default_anims_for_keys = ["anim_turn_left_01",  # 0
+        #Here, delete unnecessary ones, and change defaults
+        default_anims_for_keys = ["anim_turn_left_01",  # doesn't appear, ignore
                                   "anim_blackjack_victorwin_01",  # 1
                                   "anim_pounce_success_02",  # 2
                                   "anim_feedback_shutup_01",  # 3
-                                  "anim_knowledgegraph_success_01",  # 4
-                                  "anim_wakeword_groggyeyes_listenloop_01",  # 5
-                                  "anim_fistbump_success_01",  # 6
-                                  "anim_reacttoface_unidentified_01",  # 7
-                                  "anim_rtpickup_loop_10",  # 8
-                                  "anim_volume_stage_05"]  # 9
+                                  "anim_knowledgegraph_success_01", #4
+                                  "anim_volume_stage_05"]  # 5
 
         self.anim_index_for_key = [0] * 10
         kI = 0
@@ -228,29 +224,29 @@ class RemoteControlVector:
                 update_driving = False
         return update_driving
 
-    def update_lift_state(self, key_code, is_key_down, speed_changed):
-        """Update state of lift move intent from keyboard, and if anything changed then call update_lift"""
-        update_lift = True
-        if key_code == ord('R'):
-            self.lift_up = is_key_down
-        elif key_code == ord('F'):
-            self.lift_down = is_key_down
-        else:
-            if not speed_changed:
-                update_lift = False
-        return update_lift
+    # def update_lift_state(self, key_code, is_key_down, speed_changed):
+    #     """Update state of lift move intent from keyboard, and if anything changed then call update_lift"""
+    #     update_lift = True
+    #     if key_code == ord('R'):
+    #         self.lift_up = is_key_down
+    #     elif key_code == ord('F'):
+    #         self.lift_down = is_key_down
+    #     else:
+    #         if not speed_changed:
+    #             update_lift = False
+    #     return update_lift
 
-    def update_head_state(self, key_code, is_key_down, speed_changed):
-        """Update state of head move intent from keyboard, and if anything changed then call update_head"""
-        update_head = True
-        if key_code == ord('T'):
-            self.head_up = is_key_down
-        elif key_code == ord('G'):
-            self.head_down = is_key_down
-        else:
-            if not speed_changed:
-                update_head = False
-        return update_head
+    # def update_head_state(self, key_code, is_key_down, speed_changed):
+    #     """Update state of head move intent from keyboard, and if anything changed then call update_head"""
+    #     update_head = True
+    #     if key_code == ord('T'):
+    #         self.head_up = is_key_down
+    #     elif key_code == ord('G'):
+    #         self.head_down = is_key_down
+    #     else:
+    #         if not speed_changed:
+    #             update_head = False
+    #     return update_head
 
     def handle_key(self, key_code, is_shift_down, is_alt_down, is_key_down):
         """Called on any key press or release
@@ -268,23 +264,27 @@ class RemoteControlVector:
 
         update_driving = self.update_drive_state(key_code, is_key_down, speed_changed)
 
-        update_lift = self.update_lift_state(key_code, is_key_down, speed_changed)
+        # #Here, comment out lift state, unnecessary
+        # update_lift = self.update_lift_state(key_code, is_key_down, speed_changed)
 
-        update_head = self.update_head_state(key_code, is_key_down, speed_changed)
+        # #Here, comment out head state, unnecessary
+        # update_head = self.update_head_state(key_code, is_key_down, speed_changed)
 
         # Update driving, head and lift as appropriate
         if update_driving:
             self.update_mouse_driving()
-        if update_head:
-            self.update_head()
-        if update_lift:
-            self.update_lift()
+        # if update_head:
+        #     self.update_head()
+        # if update_lift:
+        #     self.update_lift()
 
         # Handle any keys being released (e.g. the end of a key-click)
+        #Here, take out anim keys as needed
         if not is_key_down:
-            if ord('9') >= key_code >= ord('0'):
+            if ord('5') >= key_code >= ord('0'):
                 anim_name = self.key_code_to_anim_name(key_code)
                 self.queue_action((self.vector.anim.play_animation, anim_name))
+            #Here, hardcode voicelines
             elif key_code == ord(' '):
                 self.queue_action((self.vector.behavior.say_text, self.text_to_say))
             elif key_code == ord('X'):
@@ -335,22 +335,24 @@ class RemoteControlVector:
             return slow_speed
         return mid_speed
 
-    def update_lift(self):
-        lift_speed = self.pick_speed(8, 4, 2)
-        lift_vel = (self.lift_up - self.lift_down) * lift_speed
-        if self.last_lift and lift_vel == self.last_lift:
-            return
-        self.last_lift = lift_vel
-        self.vector.motors.set_lift_motor(lift_vel)
+    # #Here, comment out
+    # def update_lift(self):
+    #     lift_speed = self.pick_speed(8, 4, 2)
+    #     lift_vel = (self.lift_up - self.lift_down) * lift_speed
+    #     if self.last_lift and lift_vel == self.last_lift:
+    #         return
+    #     self.last_lift = lift_vel
+    #     self.vector.motors.set_lift_motor(lift_vel)
 
-    def update_head(self):
-        if not self.is_mouse_look_enabled:
-            head_speed = self.pick_speed(2, 1, 0.5)
-            head_vel = (self.head_up - self.head_down) * head_speed
-            if self.last_head and head_vel == self.last_head:
-                return
-            self.last_head = head_vel
-            self.vector.motors.set_head_motor(head_vel)
+    # #Here, comment out
+    # def update_head(self):
+    #     if not self.is_mouse_look_enabled:
+    #         head_speed = self.pick_speed(2, 1, 0.5)
+    #         head_vel = (self.head_up - self.head_down) * head_speed
+    #         if self.last_head and head_vel == self.last_head:
+    #             return
+    #         self.last_head = head_vel
+    #         self.vector.motors.set_head_motor(head_vel)
 
     def update_mouse_driving(self):
         drive_dir = (self.drive_forwards - self.drive_back)
@@ -372,7 +374,7 @@ class RemoteControlVector:
         self.last_wheels = wheel_params
         self.vector.motors.set_wheel_motors(*wheel_params)
 
-
+#Here could also be unneccessary if we hard code
 def get_anim_sel_drop_down(selectorIndex):
     html_text = """<select onchange="handleDropDownSelect(this)" name="animSelector""" + str(selectorIndex) + """">"""
     i = 0
@@ -386,8 +388,9 @@ def get_anim_sel_drop_down(selectorIndex):
 
 
 def get_anim_sel_drop_downs():
+    #Here, change number of anims
     html_text = ""
-    for i in range(10):
+    for i in range(5):
         # list keys 1..9,0 as that's the layout on the keyboard
         key = i + 1 if (i < 9) else 0
         html_text += str(key) + """: """ + get_anim_sel_drop_down(key) + """<br>"""
@@ -416,11 +419,6 @@ def handle_index_page():
             <h1>Remote Control Vector</h1>
             <table>
                 <tr>
-                    <td valign = top>
-                        <div id="vectorImageMicrosoftWarning" style="display: none;color: #ff9900; text-align: center;">Video feed performance is better in Chrome or Firefox due to mjpeg limitations in this browser</div>
-                        <img src="vectorImage" id="vectorImageId" width=640 height=480>
-                        <div id="DebugInfoId"></div>
-                    </td>
                     <td width=30></td>
                     <td valign=top>
                         <h2>Controls:</h2>
@@ -433,13 +431,6 @@ def handle_index_page():
                         (steer and head angle)<br>
                         (similar to an FPS game)<br>
 
-                        <h3>Head:</h3>
-                        <b>T</b> : Move Head Up<br>
-                        <b>G</b> : Move Head Down<br>
-
-                        <h3>Lift:</h3>
-                        <b>R</b> : Move Lift Up<br>
-                        <b>F</b>: Move Lift Down<br>
                         <h3>General:</h3>
                         <b>Shift</b> : Hold to Move Faster (Driving, Head and Lift)<br>
                         <b>Alt</b> : Hold to Move Slower (Driving, Head and Lift)<br>
@@ -650,48 +641,48 @@ def handle_index_page():
     </html>
     """
 
+#Here, comment out
+# def get_annotated_image():
+#     image = flask_app.remote_control_vector.vector.camera.latest_image
+#     if flask_app.display_debug_annotations != DebugAnnotations.DISABLED.value:
+#         return image.annotate_image()
+#     return image.raw_image
 
-def get_annotated_image():
-    image = flask_app.remote_control_vector.vector.camera.latest_image
-    if flask_app.display_debug_annotations != DebugAnnotations.DISABLED.value:
-        return image.annotate_image()
-    return image.raw_image
+# #Here, comment out
+# def streaming_video():
+#     """Video streaming generator function"""
+#     while True:
+#         if flask_app.remote_control_vector:
+#             image = get_annotated_image()
 
+#             img_io = io.BytesIO()
+#             image.save(img_io, 'PNG')
+#             img_io.seek(0)
+#             yield (b'--frame\r\n'
+#                    b'Content-Type: image/png\r\n\r\n' + img_io.getvalue() + b'\r\n')
+#         else:
+#             time.sleep(.1)
 
-def streaming_video():
-    """Video streaming generator function"""
-    while True:
-        if flask_app.remote_control_vector:
-            image = get_annotated_image()
+#Here, comment out maybe, not sure
+# def serve_single_image():
+#     if flask_app.remote_control_vector:
+#         image = get_annotated_image()
+#         if image:
+#             return flask_helpers.serve_pil_image(image)
 
-            img_io = io.BytesIO()
-            image.save(img_io, 'PNG')
-            img_io.seek(0)
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/png\r\n\r\n' + img_io.getvalue() + b'\r\n')
-        else:
-            time.sleep(.1)
-
-
-def serve_single_image():
-    if flask_app.remote_control_vector:
-        image = get_annotated_image()
-        if image:
-            return flask_helpers.serve_pil_image(image)
-
-    return flask_helpers.serve_pil_image(_default_camera_image)
-
-
-def is_microsoft_browser(req):
-    agent = req.user_agent.string
-    return 'Edge/' in agent or 'MSIE ' in agent or 'Trident/' in agent
+#     return flask_helpers.serve_pil_image(_default_camera_image)
 
 
-@flask_app.route("/vectorImage")
-def handle_vectorImage():
-    if is_microsoft_browser(request):
-        return serve_single_image()
-    return flask_helpers.stream_video(streaming_video)
+# def is_microsoft_browser(req):
+#     agent = req.user_agent.string
+#     return 'Edge/' in agent or 'MSIE ' in agent or 'Trident/' in agent
+
+
+# @flask_app.route("/vectorImage")
+# def handle_vectorImage():
+#     if is_microsoft_browser(request):
+#         return serve_single_image()
+#     return flask_helpers.stream_video(streaming_video)
 
 
 def handle_key_event(key_request, is_key_down):
@@ -781,6 +772,7 @@ def handle_animTriggerDropDownSelect():
     flask_app.remote_control_vector.selected_anim_trigger_name = selected_anim_trigger_name
     return ""
 
+#Here, examine further, should be hardcoded
 @flask_app.route('/sayText', methods=['POST'])
 def handle_sayText():
     """Called from Javascript whenever the saytext text field is modified"""
