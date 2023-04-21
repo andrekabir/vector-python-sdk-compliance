@@ -448,6 +448,10 @@ def handle_index_page():
                     <h2>Animation Triggers:</h2>
                     """ + get_anim_trigger_sel_drop_down() + """<br><br>
                     </td>
+                    <td width=30></td>
+                    <td valign=top>
+                        <b>Q</b> : <button name="sayText" id="sayTextId" onClick=handleTextButton("this")>text 1</button><br>
+                    </td>
                 </tr>
             </table>
 
@@ -606,9 +610,18 @@ def handle_index_page():
                     postHttpRequest(actionType, {clientX, clientY, isButtonDown, deltaX, deltaY})
                 }
 
+                function handleTextButton(textString)
+                {
+                    console.log("here")
+                    console.log(typeof(textString))
+                    postHttpRequest("sayText", {textString})
+                }
+
                 function handleTextInput(textField)
                 {
                     textEntered = textField.value
+                    console.log("here2")
+                    console.log(typeof(textField))
                     postHttpRequest("sayText", {textEntered})
                 }
 
@@ -640,50 +653,6 @@ def handle_index_page():
         </body>
     </html>
     """
-
-#Here, comment out
-# def get_annotated_image():
-#     image = flask_app.remote_control_vector.vector.camera.latest_image
-#     if flask_app.display_debug_annotations != DebugAnnotations.DISABLED.value:
-#         return image.annotate_image()
-#     return image.raw_image
-
-# #Here, comment out
-# def streaming_video():
-#     """Video streaming generator function"""
-#     while True:
-#         if flask_app.remote_control_vector:
-#             image = get_annotated_image()
-
-#             img_io = io.BytesIO()
-#             image.save(img_io, 'PNG')
-#             img_io.seek(0)
-#             yield (b'--frame\r\n'
-#                    b'Content-Type: image/png\r\n\r\n' + img_io.getvalue() + b'\r\n')
-#         else:
-#             time.sleep(.1)
-
-#Here, comment out maybe, not sure
-# def serve_single_image():
-#     if flask_app.remote_control_vector:
-#         image = get_annotated_image()
-#         if image:
-#             return flask_helpers.serve_pil_image(image)
-
-#     return flask_helpers.serve_pil_image(_default_camera_image)
-
-
-# def is_microsoft_browser(req):
-#     agent = req.user_agent.string
-#     return 'Edge/' in agent or 'MSIE ' in agent or 'Trident/' in agent
-
-
-# @flask_app.route("/vectorImage")
-# def handle_vectorImage():
-#     if is_microsoft_browser(request):
-#         return serve_single_image()
-#     return flask_helpers.stream_video(streaming_video)
-
 
 def handle_key_event(key_request, is_key_down):
     message = json.loads(key_request.data.decode("utf-8"))
@@ -780,7 +749,6 @@ def handle_sayText():
     if flask_app.remote_control_vector:
         flask_app.remote_control_vector.text_to_say = message['textEntered']
     return ""
-
 
 @flask_app.route('/updateVector', methods=['POST'])
 def handle_updateVector():
