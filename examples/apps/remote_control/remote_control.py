@@ -439,7 +439,7 @@ def handle_index_page():
                         <h3>Play Animations</h3>
                         <b>0 .. 9</b> : Play Animation mapped to that key<br>
                         <h3>Talk</h3>
-                        <b>Space</b> : Say <input type="text" name="sayText" id="sayTextId" value=\"""" + flask_app.remote_control_vector.text_to_say + """\" onchange=handleTextInput(this)>
+                        <!-- <b>Space</b> : Say <input type="text" name="sayText" id="sayTextId" value=\"""" + flask_app.remote_control_vector.text_to_say + """\" onchange=handleTextInput(this)> -->
                     </td>
                     <td width=30></td>
                     <td valign=top>
@@ -450,7 +450,7 @@ def handle_index_page():
                     </td>
                     <td width=30></td>
                     <td valign=top>
-                        <b>Q</b> : <button name="sayText" id="sayTextId" onClick=handleTextButton("this")>text 1</button><br>
+                        <b>Q</b> : <button name="sayText" id="sayTextId">text 1</button><br>
                     </td>
                 </tr>
             </table>
@@ -471,14 +471,22 @@ def handle_index_page():
 
                 function postHttpRequest(url, dataSet)
                 {
+                    console.log("posthttp")
+                    console.log(url)
+                    console.log(dataSet)
                     var xhr = new XMLHttpRequest();
                     xhr.open("POST", url, true);
+                    xhr.onreadystatechange = () => { // Call a function when the state changes.
+                        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                            console.log("done")
+                        }
+                        console.log("done2")
+                    }
                     xhr.send( JSON.stringify( dataSet ) );
                 }
 
                 function updateVector()
                 {
-                    console.log("Updating log")
                     if (gIsMicrosoftBrowser && !gSkipFrame) {
                         // IE doesn't support MJPEG, so we need to ping the server for more images.
                         // Though, if this happens too frequently, the controls will be unresponsive.
@@ -496,6 +504,7 @@ def handle_index_page():
 
                     xhr.open("POST", "updateVector", true);
                     xhr.send( null );
+                    // xhr.send({})
                 }
                 setInterval(updateVector , 60);
 
@@ -610,19 +619,21 @@ def handle_index_page():
                     postHttpRequest(actionType, {clientX, clientY, isButtonDown, deltaX, deltaY})
                 }
 
-                function handleTextButton(textString)
+                function handleTextButton(textField)
                 {
                     console.log("here")
-                    console.log(typeof(textString))
-                    postHttpRequest("sayText", {textString})
+                    console.log(textField)
+                    textEntered = textField
+                    postHttpRequest("sayText", {textEntered})
                 }
 
                 function handleTextInput(textField)
                 {
-                    textEntered = textField.value
                     console.log("here2")
-                    console.log(typeof(textField))
-                    postHttpRequest("sayText", {textEntered})
+                    console.log(typeof(textField.value))
+                    // textEntered = textField.value
+                    textEntered = "ignore input say this instead"
+                    postHttpRequest("sayText", {"textEntered": textEntered})
                 }
 
                 document.addEventListener("keydown", function(e) { handleKeyActivity(e, "keydown") } );
@@ -642,12 +653,17 @@ def handle_index_page():
                     }
                 }
 
-                document.getElementById("sayTextId").addEventListener("keydown", function(event) {
+                /* document.getElementById("sayTextId").addEventListener("keydown", function(event) {
                     stopEventPropagation(event);
                 } );
                 document.getElementById("sayTextId").addEventListener("keyup", function(event) {
                     stopEventPropagation(event);
-                } );
+                } ); */
+
+                var button = document.getElementById("sayTextId");
+                button.onclick = function() {
+                    handleTextButton("predefined speech")
+                }
             </script>
 
         </body>
@@ -748,6 +764,7 @@ def handle_sayText():
     message = json.loads(request.data.decode("utf-8"))
     if flask_app.remote_control_vector:
         flask_app.remote_control_vector.text_to_say = message['textEntered']
+        flask_app.remote_control_vector.queue_action((flask_app.remote_control_vector.vector.behavior.say_text, flask_app.remote_control_vector.text_to_say))
     return ""
 
 @flask_app.route('/updateVector', methods=['POST'])
