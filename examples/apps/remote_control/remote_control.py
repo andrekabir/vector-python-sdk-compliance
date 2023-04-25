@@ -284,9 +284,8 @@ class RemoteControlVector:
             if ord('5') >= key_code >= ord('0'):
                 anim_name = self.key_code_to_anim_name(key_code)
                 self.queue_action((self.vector.anim.play_animation, anim_name))
-            #Here, hardcode voicelines
-            elif key_code == ord(' '):
-                self.queue_action((self.vector.behavior.say_text, self.text_to_say))
+            # elif key_code == ord(' '):
+            #     self.queue_action((self.vector.behavior.say_text, self.text_to_say))
             elif key_code == ord('X'):
                 self.queue_action((self.vector.anim.play_animation_trigger, self.selected_anim_trigger_name))
 
@@ -374,7 +373,6 @@ class RemoteControlVector:
         self.last_wheels = wheel_params
         self.vector.motors.set_wheel_motors(*wheel_params)
 
-#Here could also be unneccessary if we hard code
 def get_anim_sel_drop_down(selectorIndex):
     html_text = """<select onchange="handleDropDownSelect(this)" name="animSelector""" + str(selectorIndex) + """">"""
     i = 0
@@ -450,7 +448,10 @@ def handle_index_page():
                     </td>
                     <td width=30></td>
                     <td valign=top>
-                        <b>Q</b> : <button name="sayText" id="sayTextId">text 1</button><br>
+                        <!-- Here -->
+                        <button name="sayText" id="sayTextId">text 1</button><br>
+                        <button name="sayText2" id="sayTextId2">text 2</button><br>
+                        <button name="sayText3" id="sayTextId3">text 3</button><br>
                     </td>
                 </tr>
             </table>
@@ -621,8 +622,7 @@ def handle_index_page():
 
                 function handleTextButton(textField)
                 {
-                    console.log("here")
-                    console.log(textField)
+                    console.log("text button")
                     textEntered = textField
                     postHttpRequest("sayText", {textEntered})
                 }
@@ -659,10 +659,18 @@ def handle_index_page():
                 document.getElementById("sayTextId").addEventListener("keyup", function(event) {
                     stopEventPropagation(event);
                 } ); */
-
-                var button = document.getElementById("sayTextId");
-                button.onclick = function() {
-                    handleTextButton("predefined speech")
+                // Here
+                var button1 = document.getElementById("sayTextId");
+                button1.onclick = function() {
+                    handleTextButton("predefined speech one")
+                }
+                var button2 = document.getElementById("sayTextId2");
+                button2.onclick = function() {
+                    handleTextButton("predefined speech two")
+                }
+                var button3 = document.getElementById("sayTextId3");
+                button3.onclick = function() {
+                    handleTextButton("predefined speech three")
                 }
             </script>
 
@@ -757,7 +765,6 @@ def handle_animTriggerDropDownSelect():
     flask_app.remote_control_vector.selected_anim_trigger_name = selected_anim_trigger_name
     return ""
 
-#Here, examine further, should be hardcoded
 @flask_app.route('/sayText', methods=['POST'])
 def handle_sayText():
     """Called from Javascript whenever the saytext text field is modified"""
