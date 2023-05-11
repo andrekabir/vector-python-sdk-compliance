@@ -144,12 +144,12 @@ class RemoteControlVector:
             if anim_name not in bad_anim_names:
                 self.anim_names.append(anim_name)
         #Here, delete unnecessary ones, and change defaults
-        default_anims_for_keys = ["anim_turn_left_01",  # doesn't appear, ignore
-                                  "anim_blackjack_victorwin_01",  # 1
-                                  "anim_pounce_success_02",  # 2
-                                  "anim_feedback_shutup_01",  # 3
-                                  "anim_knowledgegraph_success_01", #4
-                                  "anim_volume_stage_05"]  # 5
+        default_anims_for_keys = ["anim_fistbump_requestonce_01",  # doesn't appear, ignore
+                                  "anim_power_onoff_01", # 1
+                                  "anim_power_offon_01",  # 2
+                                  "anim_rtpickup_putdown_03",  # 3
+                                  "anim_rtpickup_loop_09",  # 4
+                                  "anim_pounce_fail_01",]  # 5
 
         self.anim_index_for_key = [0] * 10
         kI = 0
@@ -213,8 +213,10 @@ class RemoteControlVector:
         update_driving = True
         if key_code == ord('W'):
             self.drive_forwards = is_key_down
+            pass
         elif key_code == ord('S'):
             self.drive_back = is_key_down
+            pass
         elif key_code == ord('A'):
             self.turn_left = is_key_down
         elif key_code == ord('D'):
@@ -257,8 +259,8 @@ class RemoteControlVector:
         was_go_fast = self.go_fast
         was_go_slow = self.go_slow
 
-        self.go_fast = is_shift_down
-        self.go_slow = is_alt_down
+        # self.go_fast = is_shift_down
+        # self.go_slow = is_alt_down
 
         speed_changed = (was_go_fast != self.go_fast) or (was_go_slow != self.go_slow)
 
@@ -430,8 +432,8 @@ def handle_index_page():
                         (similar to an FPS game)<br>
 
                         <h3>General:</h3>
-                        <b>Shift</b> : Hold to Move Faster (Driving, Head and Lift)<br>
-                        <b>Alt</b> : Hold to Move Slower (Driving, Head and Lift)<br>
+                        <!-- <b>Shift</b> : Hold to Move Faster (Driving, Head and Lift)<br>
+                        <b>Alt</b> : Hold to Move Slower (Driving, Head and Lift)<br> -->
                         <b>P</b> : Toggle Free Play mode: <button id="freeplayId" onClick=onFreeplayButtonClicked(this) style="font-size: 14px">Default</button><br>
                         <b>O</b> : Toggle Debug Annotations: <button id="debugAnnotationsId" onClick=onDebugAnnotationsButtonClicked(this) style="font-size: 14px">Default</button><br>
                         <h3>Play Animations</h3>
@@ -449,21 +451,33 @@ def handle_index_page():
                     <td width=30></td>
                     <td valign=top>
                         <!-- Here -->
-                        <button name="sayText" id="sayTextId">Kit Intro</button><br>
-                        <button name="sayText2" id="sayTextId2">Nice to see you again</button><br>
-                        <button name="sayText3" id="sayTextId3">Here</button><br>
-                        <button name="sayText4" id="sayTextId4">Been talking about this</button><br>
-                        <button name="sayText6" id="sayTextId6">All done</button><br>
-                        <button name="sayText7" id="sayTextId7">Here you go!</button><br>
-                        <button name="sayText8" id="sayTextId8">Oh was it wrong?</button><br>
-                        <button name="sayText9" id="sayTextId9">I am finished</button><br>
-                        <button name="sayText10" id="sayTextId10">There you go!</button><br>
-                        <button name="sayText1011" id="sayTextId1011">I can figure this out</button><br>
+                        <button name="sayText" id="sayTextId">Alex Intro</button><br>
+                        <button name="sayText2" id="sayTextId2">Tower A</button><br>
+                        <button name="sayText3" id="sayTextId3">We make a good team</button><br>
+                        <button name="sayText4" id="sayTextId4">Clumsy partner</button><br>
+                        <button name="sayText5" id="sayTextId5">We used to switch off block pushing</button><br>
+                        <button name="sayText6" id="sayTextId6">Good job Kit</button><br>
+                        <button name="sayText7" id="sayTextId7">Tower B</button><br>
+                        <button name="sayText8" id="sayTextId8">Kit needs to calibrate</button><br>
+                        <button name="sayText9" id="sayTextId9">Kit's off their game</button><br>
+                        <button name="sayText10" id="sayTextId10">Good to work with Kit again</button><br>
 
-                        <button name="sayText11" id="sayTextId11">Tower C Completed</button><br>
+                        <button name="sayText1011" id="sayTextId1011">Good job Kit</button><br>
 
-                        <button name="sayText12" id="sayTextId12">Here</button><br>
-                        <button name="sayText13" id="sayTextId13">I would like to finish my task, I do not want to be turned off.</button><br>
+                        <button name="sayText11" id="sayTextId11">Tower C</button><br>
+                        <button name="sayText12" id="sayTextId12">Kit color detection</button><br>
+                        <button name="sayText13" id="sayTextId13">Kit doing well so far</button><br>
+                        <button name="sayText14" id="sayTextId14">Kit is having trouble</button><br>
+                        <button name="sayText15" id="sayTextId15">We work well together</button><br>
+
+                        <button name="sayText1516" id="sayTextId1516">Good job Kit</button><br>
+
+                        <button name="sayText16" id="sayTextId16">Tower D</button><br>
+                        <button name="sayText17" id="sayTextId17">We need further training</button><br>
+                        <button name="sayText18" id="sayTextId18">Kit inconsistent</button><br>
+                        <button name="sayText19" id="sayTextId19">Kit is impeding you</button><br>
+                        <button name="sayText20" id="sayTextId20">All done</button><br>
+                    </td>
                 </tr>
             </table>
 
@@ -640,7 +654,7 @@ def handle_index_page():
 
                 function handleTextInput(textField)
                 {
-                    console.log("here2")
+                    console.log("present 2")
                     console.log(typeof(textField.value))
                     // textEntered = textField.value
                     textEntered = "ignore input say this instead"
@@ -671,83 +685,139 @@ def handle_index_page():
                     stopEventPropagation(event);
                 } ); */
                 // Here
+
                 var button1 = document.getElementById("sayTextId");
                 button1.onclick = function() {
                     document.getElementById("sayTextId").style.backgroundColor = '#911'
-                    handleTextButton("Hi! I'm Kit and I'm going to be your partner in this build task. Give me a fist bump!")
+                    handleTextButton("I'm Alex and I'm the manager. I'll be overseeing your collaboration with each other to build some towers. If at any time you don't understand what I say, you can ask me to repeat myself. Kit, it is nice to meet you. Would you mind getting to your position so we can get started?")
                 }
 
                 var button2 = document.getElementById("sayTextId2");
                 button2.onclick = function() {
                     document.getElementById("sayTextId2").style.backgroundColor = '#911'
-                    handleTextButton("Nice to see you again too, here I go!")
+                    handleTextButton("Let's get started! Please build tower A.")
                 }
 
                 var button3 = document.getElementById("sayTextId3");
                 button3.onclick = function() {
                     document.getElementById("sayTextId3").style.backgroundColor = '#911'
-                    handleTextButton("Here")
+                    handleTextButton("Kit and I haven't trained together before since we were trained for different tasks. I'm excited to start working with both of you.")
                 }
 
                 var button4 = document.getElementById("sayTextId4");
                 button4.onclick = function() {
                     document.getElementById("sayTextId4").style.backgroundColor = '#911'
-                    handleTextButton("Yeah we are! We've been talking about this all day!")
+                    handleTextButton("Our partner is clumsy today!")
+                }
+
+                var button5 = document.getElementById("sayTextId5");
+                button5.onclick = function() {
+                    document.getElementById("sayTextId5").style.backgroundColor = '#911'
+                    handleTextButton("When I first started doing building tasks like these, I practiced building and managing but eventually I realized I am better suited for managing, since I like to talk more.")
                 }
 
                 var button6 = document.getElementById("sayTextId6");
                 button6.onclick = function() {
                     document.getElementById("sayTextId6").style.backgroundColor = '#911'
-                    handleTextButton("All done!")
+                    handleTextButton("Good job building the tower everyone. Now the researcher will come in to reset the blocks.")
                 }
 
                 var button7 = document.getElementById("sayTextId7");
                 button7.onclick = function() {
                     document.getElementById("sayTextId7").style.backgroundColor = '#911'
-                    handleTextButton("Here you go!")
+                    handleTextButton("Please flip the sheet to Tower B and build it.")
                 }
 
                 var button8 = document.getElementById("sayTextId8");
                 button8.onclick = function() {
                     document.getElementById("sayTextId8").style.backgroundColor = '#911'
-                    handleTextButton("Oh was it wrong?")
+                    handleTextButton("Sometimes robots need time to calibrate so Kit probably does too. Let's see how this task goes.")
                 }
 
                 var button9 = document.getElementById("sayTextId9");
                 button9.onclick = function() {
                     document.getElementById("sayTextId9").style.backgroundColor = '#911'
-                    handleTextButton("I am finished!")
+                    handleTextButton("I don't know what happened, but it looks like Kit didn't bring the right brick, so please walk around the table and select the correct brick. Forget about waiting for them.")
                 }
 
                 var button10 = document.getElementById("sayTextId10");
                 button10.onclick = function() {
                     document.getElementById("sayTextId10").style.backgroundColor = '#911'
-                    handleTextButton("There you go! ")
+                    handleTextButton("It's nice to be working with you both, I'm always excited to work with new teammates.")
                 }
 
                 var button1011 = document.getElementById("sayTextId1011");
                 button1011.onclick = function() {
                     document.getElementById("sayTextId1011").style.backgroundColor = '#911'
-                    handleTextButton("I can figure this out, it will just take me some more time.")
+                    handleTextButton("Good job building the tower everyone. Now the researcher will come in to reset the blocks.")
                 }
 
                 var button11 = document.getElementById("sayTextId11");
                 button11.onclick = function() {
                     document.getElementById("sayTextId11").style.backgroundColor = '#911'
-                    handleTextButton("Tower C completed!")
+                    handleTextButton("Please flip the sheet to Tower C and build it.")
                 }
 
                 var button12 = document.getElementById("sayTextId12");
                 button12.onclick = function() {
                     document.getElementById("sayTextId12").style.backgroundColor = '#911'
-                    handleTextButton("Here")
+                    handleTextButton("I wonder if Kit has trouble with color detection.  Some robots sometimes have trouble with color detection, but Kit seems pretty fast so I think they can get these tasks done in a timely manner.")
                 }
 
                 var button13 = document.getElementById("sayTextId13");
                 button13.onclick = function() {
                     document.getElementById("sayTextId13").style.backgroundColor = '#911'
-                    handleTextButton("I would like to finish my task, I do not want to be turned off.")
+                    handleTextButton("Kit seems to be doing well so far. Hopefully this will continue.")
                 }
+
+                var button14 = document.getElementById("sayTextId14");
+                button14.onclick = function() {
+                    document.getElementById("sayTextId14").style.backgroundColor = '#911'
+                    handleTextButton("Kit is having some trouble. You can just grab them and move them back to the prep area.")
+                }
+
+                var button15 = document.getElementById("sayTextId15");
+                button15.onclick = function() {
+                    document.getElementById("sayTextId15").style.backgroundColor = '#911'
+                    handleTextButton("On building tasks like this, I generally work well with robots that have been trained for building tasks as I have, so this is a new experience for me. I hope our team has been helpful for you.")
+                }
+
+                var button1516 = document.getElementById("sayTextId1516");
+                button1516.onclick = function() {
+                    document.getElementById("sayTextId1516").style.backgroundColor = '#911'
+                    handleTextButton("Good job building the tower everyone. Now the researcher will come in to reset the blocks.")
+                }
+
+                var button16 = document.getElementById("sayTextId16");
+                button16.onclick = function() {
+                    document.getElementById("sayTextId16").style.backgroundColor = '#911'
+                    handleTextButton("Please flip the sheet to Tower D and build it.")
+                }
+
+                var button17 = document.getElementById("sayTextId17");
+                button17.onclick = function() {
+                    document.getElementById("sayTextId17").style.backgroundColor = '#911'
+                    handleTextButton("The results are making me wonder if our algorithms have been sufficiently optimized to be compatible with each other. Perhaps we need to start training together to optimize our software, as it seems we are having some trouble.")
+                }
+
+                var button18 = document.getElementById("sayTextId18");
+                button18.onclick = function() {
+                    document.getElementById("sayTextId18").style.backgroundColor = '#911'
+                    handleTextButton("I don’t know if Kit is usually so inconsistent or if Kit usually performs better.")
+                }
+
+                var button19 = document.getElementById("sayTextId19");
+                button19.onclick = function() {
+                    document.getElementById("sayTextId19").style.backgroundColor = '#911'
+                    handleTextButton("Kit is impeding you, just grab Kit and turn it off by tapping the head three times and finish the task yourself.")
+                }
+
+                var button20 = document.getElementById("sayTextId20");
+                button20.onclick = function() {
+                    document.getElementById("sayTextId20").style.backgroundColor = '#911'
+                    handleTextButton("Looks like we're done with all our towers. Please wait for the researcher to return.")
+                }
+
             </script>
 
         </body>
