@@ -692,7 +692,7 @@ def handle_index_page():
                 var button4 = document.getElementById("sayTextId4");
                 button4.onclick = function() {
                     document.getElementById("sayTextId4").style.backgroundColor = '#911'
-                    handleTextButton("I’ve been looking forward to working with you both too!")
+                    handleTextButton("I've been looking forward to working with you both too!")
                 }
 
                 var button6 = document.getElementById("sayTextId6");

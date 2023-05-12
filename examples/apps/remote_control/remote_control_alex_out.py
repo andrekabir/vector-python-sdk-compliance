@@ -803,7 +803,7 @@ def handle_index_page():
                 var button18 = document.getElementById("sayTextId18");
                 button18.onclick = function() {
                     document.getElementById("sayTextId18").style.backgroundColor = '#911'
-                    handleTextButton("I don’t know if Kit is usually so inconsistent or if Kit usually performs better.")
+                    handleTextButton("I don't know if Kit is usually so inconsistent or if Kit usually performs better.")
                 }
 
                 var button19 = document.getElementById("sayTextId19");
