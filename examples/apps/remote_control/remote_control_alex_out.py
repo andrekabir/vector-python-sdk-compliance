@@ -477,6 +477,10 @@ def handle_index_page():
                         <button name="sayText18" id="sayTextId18">Kit inconsistent</button><br>
                         <button name="sayText19" id="sayTextId19">Kit is impeding you</button><br>
                         <button name="sayText20" id="sayTextId20">All done</button><br>
+
+                        <button name="sayText21" id="sayTextId21">Yes</button><br>
+                        <button name="sayText22" id="sayTextId22">No</button><br>
+                        <button name="sayText23" id="sayTextId23">Can you repeat that</button><br>
                     </td>
                 </tr>
             </table>
@@ -816,6 +820,24 @@ def handle_index_page():
                 button20.onclick = function() {
                     document.getElementById("sayTextId20").style.backgroundColor = '#911'
                     handleTextButton("Looks like we're done with all our towers. Please wait for the researcher to return.")
+                }
+
+                var button21 = document.getElementById("sayTextId21");
+                button21.onclick = function() {
+                    document.getElementById("sayTextId21").style.backgroundColor = '#911'
+                    handleTextButton("Yes")
+                }
+
+                var button22 = document.getElementById("sayTextId22");
+                button22.onclick = function() {
+                    document.getElementById("sayTextId22").style.backgroundColor = '#911'
+                    handleTextButton("No")
+                }
+
+                var button23 = document.getElementById("sayTextId23");
+                button23.onclick = function() {
+                    document.getElementById("sayTextId23").style.backgroundColor = '#911'
+                    handleTextButton("Can you repeat that")
                 }
 
             </script>
