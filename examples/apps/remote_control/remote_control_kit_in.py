@@ -869,7 +869,6 @@ def run():
 
 
     with anki_vector.AsyncRobot(args.serial, enable_face_detection=True, enable_custom_object_detection=True) as robot:
-        robot.behavior.set_eye_color(hue=0.05, saturation=0.99)
         flask_app.remote_control_vector = RemoteControlVector(robot)
         flask_app.display_debug_annotations = DebugAnnotations.ENABLED_ALL.value
 
